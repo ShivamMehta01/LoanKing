@@ -361,8 +361,11 @@ public class LoanAdapter extends RecyclerView.Adapter<LoanAdapter.ViewHolder> {
 
         holder.rejectBtn.setOnClickListener(view -> {
             String id=loanRequests.get(position);
+
+            // removing from list2 of current user.
             database.getReference().child("Users").child(parentUser.getId()).child("list2").child(id).removeValue();
 
+            // sending mail to the user who created that loan request.
             database.getReference().child("LoanRequests").child(loanRequests.get(position)).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

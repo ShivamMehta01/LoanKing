@@ -80,10 +80,12 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.ViewHolder> 
                 modifiedRequests.clear();
                 thisUserId= Objects.requireNonNull(snapshot.child("createdBy").getValue()).toString();
                 for(DataSnapshot data:snapshot.child("modifiedVariants").getChildren()) {
+                    // adding the loan requests created by the current user.
                     if(parentUser.getId().equals(thisUserId))
                         modifiedRequests.add(data.getKey());
                     else
                     {
+                        // adding the loan requests modified by the current user.
                         if(Objects.requireNonNull(data.child("modifiedBy").getValue()).toString().equals(parentUser.getId()))
                             modifiedRequests.add(data.getKey());
                     }

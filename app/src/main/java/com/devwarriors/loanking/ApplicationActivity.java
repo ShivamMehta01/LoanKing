@@ -65,10 +65,13 @@ public class ApplicationActivity extends AppCompatActivity {
                     Toast toast=Toast.makeText(ApplicationActivity.this,"You are not eligible to apply for loans having zero amount",Toast.LENGTH_SHORT);
                     toast.show();
                 } else {
+
+                    //updating the loanAmountRequestedSoFar and loanFreq in database.
                     thisUser.setLoanAmtReqSoFar(thisUser.getLoanAmtReqSoFar()+Integer.parseInt(b.inputLoan.getText().toString()));
                     thisUser.setLoanFreq(thisUser.getLoanFreq()+1);
                     database.getReference().child("Users").child(thisUser.getId()).child("Info").setValue(thisUser);
 
+                    // generating a random id
                     UUID uuid=UUID.randomUUID();
 
                     // Creating new LoanRequest in "LoanRequests" field
@@ -91,7 +94,9 @@ public class ApplicationActivity extends AppCompatActivity {
                             Toast.makeText(ApplicationActivity.this, "Applied Successfully", Toast.LENGTH_SHORT).show();
                             for(DataSnapshot data:snapshot.getChildren()) {
                                 if(!Objects.equals(data.getKey(), thisUser.getId())) {
+                                    // Adding the loan request (id) in the list 2 of this user.
                                     database.getReference().child("Users").child(data.getKey()).child("list2").child(uuid.toString()).setValue(uuid.toString());
+                                    // The below loop is for getting mail id and other details for sending mail(Created Loan Request) to the user.
                                     database.getReference().child("Users").child(data.getKey()).child("Info").addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot snapshot) {

@@ -51,7 +51,7 @@ public class SignInActivity extends AppCompatActivity {
         progressDialog.setMessage("Loading");
 
 
-        // Initialize Firebase Auth
+        // Initialize Firebase Auth and Database
         mAuth = FirebaseAuth.getInstance();
         database=FirebaseDatabase.getInstance();
 
@@ -82,6 +82,7 @@ public class SignInActivity extends AppCompatActivity {
                         thisUser.setName(user.getDisplayName());
                         thisUser.setEmail(user.getEmail());
 
+                        // fill the list2 of user from global list as soon as he/she logs in.
                         database.getReference().child("GlobalList").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -97,9 +98,12 @@ public class SignInActivity extends AppCompatActivity {
                             }
                         });
 
+                        // if user is a new user add his/her info into the database.
                         if(Objects.requireNonNull(task.getResult().getAdditionalUserInfo()).isNewUser()) {
                             database.getReference().child("Users").child(thisUser.getId()).child("Info").setValue(thisUser);
                         }
+
+                        // reDirect the user to the next activity now.
                         reDirect();
                     } else {
                         // If sign in fails, display a message to the user.

@@ -57,6 +57,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(b.getRoot());
         getSupportActionBar().hide();
 
+        // Initialize the FirebaseAuth and FirebaseDatabase.
+        auth=FirebaseAuth.getInstance();
+        database=FirebaseDatabase.getInstance();
+
         progressDialog=new ProgressDialog(MainActivity.this);
         progressDialog.setTitle("Please Wait");
         progressDialog.setMessage("Calculating Your Cibil Score");
@@ -72,10 +76,6 @@ public class MainActivity extends AppCompatActivity {
                 thisUser.getLoanAmtReqSoFar(),
                 thisUser.getLoanFreq(),
                 thisUser.getDob()));
-
-
-        auth=FirebaseAuth.getInstance();
-        database=FirebaseDatabase.getInstance();
 
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("Deals");
